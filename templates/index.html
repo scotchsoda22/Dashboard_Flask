@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Matrix</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('form').submit(function(event){
+        event.preventDefault();
+        var coin = $('#coin').val();
+        $.ajax({
+          method: 'POST',
+          url: '/generate_matrix',
+          data: {'coin': coin},
+          success: function(response) {
+            $('#matrix').html('');
+            var matrix = JSON.parse(response);
+            var headerRow = "<tr><th></th>";
+            for (var key in matrix) {
+              headerRow += "<th>" + key + "</th>";
+            }
+            headerRow += "</tr>";
+            $('#matrix').append(headerRow);
+            for (var key1 in matrix) {
+              var row = "<tr><th>" + key1 + "</th>";
+              for (var key2 in matrix[key1]) {
+                row += "<td>" + matrix[key1][key2] + "</td>";
+              }
+              row += "</tr>";
+              $('#matrix').append(row);
+            }
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <form>
+    <label for="coin">Coin:</label>
+    <input type="text" id="coin" name="coin">
+    <input type="submit" value="Submit">
+  </form>
+  <table id="matrix"></table>
+</body>
+</html>
