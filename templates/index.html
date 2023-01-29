@@ -5,7 +5,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
     setInterval(function() {
-      var coin = $("#coin").val();
+      var coin = $("#coin-select").val();
       $.ajax({
         method: "GET",
         url: "/poll_matrix?coin=" + coin,
@@ -31,11 +31,13 @@
   </script>
 </head>
 <body>
-  <form>
-    <label for="coin">Coin:</label>
-    <input type="text" id="coin" name="coin">
-    <input type="submit" value="Submit">
-  </form>
+  <p>Select a cryptocurrency:
+    <select id="coin-select">
+      {% for symbol in symbols %}
+        <option value="{{ symbol }}">{{ symbol }}</option>
+      {% endfor %}
+    </select>
+  </p>
   <table id="matrix"></table>
 </body>
 </html>

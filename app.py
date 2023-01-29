@@ -12,7 +12,8 @@ dataframe = exch.combine_dataframes()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    symbols = dataframe['symbol'].unique().tolist()
+    return render_template('index.html', symbols=symbols)
 
 def update_matrix():
     global dataframe
@@ -37,7 +38,7 @@ def poll_matrix():
             if i != j:
                 rate1 = df[df['exchange'] == exchanges[i]]['askRate'].min()
                 rate2 = df[df['exchange'] == exchanges[j]]['bidRate'].max()
-                diff = (rate1 - rate2) / rate1
+                diff =  "{:.2f}%".format(((abs(rate1 - rate2) / ((rate1 + rate2) / 2)) * 100))
                 matrix.at[exchanges[i], exchanges[j]] = diff
     if matrix.size != 0:
         return matrix.to_json()
