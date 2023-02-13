@@ -72,6 +72,27 @@ class exchange:
     df['askRate'] = pd.to_numeric(df['askRate'])
 
     return df
+
+  def ex_huobi(self):
+    r = requests.get("https://api.huobi.pro/market/tickers")
+    data = r.json()
+    data = data['data']
+    df = pd.DataFrame()
+    for value in data:
+      df = df.append({'symbol': value['symbol'],
+                      'bidRate': value['bid'],
+                      'askRate': value['ask']}, ignore_index=True)
+    df = df[df['symbol'].str.endswith("usdt")==True]
+    df['symbol'] = df['symbol'].str.replace('usdt','')
+    df.insert(0, 'exchange', 'huobi')
+    df['bidRate'].replace('', np.nan, inplace=True)  
+    df['askRate'].replace('', np.nan, inplace=True)  
+    # df = df[df["askRate"].str.contains("NaN") == False]
+    # df = df[df["bidRate"].str.contains("NaN") == False]
+    df['bidRate'] = pd.to_numeric(df['bidRate'])
+    df['askRate'] = pd.to_numeric(df['askRate'])
+    
+    return df
   
 
   def combine_dataframes(self):
