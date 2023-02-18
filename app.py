@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import scheduler
 import threading
+import sqlite3
 from exchanges import exchange
 # from dashboard_1 import update_matrix, poll_matrix
 # import warnings
@@ -53,8 +54,7 @@ def poll_matrix():
                 matrix.at[exchanges[i], exchanges[j]] = diff
     if matrix.size != 0:
         return matrix.to_json()
-
-
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

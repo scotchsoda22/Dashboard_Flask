@@ -5,6 +5,7 @@ Matrix
 {% endblock %}
 
 {% block content %}
+
   <p class="select-container">
     <select id="coin-select">
       {% for symbol in symbols %}
@@ -25,21 +26,21 @@ Matrix
         success: function(response) {
           var matrix = JSON.parse(response);
           var headerRow = "<tr><th></th>";
-          for (var key in matrix) {
-            headerRow += "<th>" + key + "</th>";
+          for (var col in matrix) {
+            headerRow += "<th>" + col + "<br>askRate</th>";
           }
           headerRow += "</tr>";
           $("#matrix").html(headerRow);
-          for (var key1 in matrix) {
-            var row = "<tr><th>" + key1 + "</th>";
-            for (var key2 in matrix[key1]) {
-              row += "<td>" + matrix[key1][key2] + "</td>";
+          for (var row in matrix) {
+            var rowData = "<tr><th>" + row + "<br>bidRate</th>";
+            for (var col in matrix[row]) {
+              rowData += "<td>" + matrix[row][col] + "</td>";
             }
-            row += "</tr>";
-            $("#matrix").append(row);
+            rowData += "</tr>";
+            $("#matrix").append(rowData);
           }
         }
       });
-    }, 1000);
+    }, 5000);
   </script>
 {% endblock %}
